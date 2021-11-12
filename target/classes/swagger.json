@@ -1,0 +1,617 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Здесь вся информация, необходимая для понимания работы данного REST-API приложения",
+    "version": "V0.0.0",
+    "title": "Документация по API приложения"
+  },
+  "host": "localhost:80",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Truck",
+      "description": "Взаимодействие с автомобилями"
+    },
+    {
+      "name": "User",
+      "description": "Взаимодействие с Пользователями"
+    }
+  ],
+  "paths": {
+    "/pr4/trucks": {
+      "get": {
+        "tags": [
+          "Truck"
+        ],
+        "summary": "Получение информации о всех автомобилях",
+        "operationId": "getAllTrucksUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Truck"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Truck"
+        ],
+        "summary": "Добавление нового автомобиля",
+        "operationId": "addNewOrderUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "truck",
+            "description": "truck",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Truck"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/pr4/trucks/{id}": {
+      "get": {
+        "tags": [
+          "Truck"
+        ],
+        "summary": "Получение информации об автомобиле по id",
+        "operationId": "getTruckUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok",
+            "schema": {
+              "$ref": "#/definitions/Truck"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Truck with this id doesn't exist"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Truck"
+        ],
+        "summary": "Обновление информации об автомобиле по id",
+        "operationId": "updateTruckUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          },
+          {
+            "in": "body",
+            "name": "truck",
+            "description": "truck",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Truck"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Truck with this id updated",
+            "schema": {
+              "$ref": "#/definitions/Truck"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Truck with this id doesn't exist"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Truck"
+        ],
+        "summary": "Удаление автомобиля по id",
+        "operationId": "deleteTruckUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Truck with this id deleted"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Truck with this id doesn't exist"
+          }
+        }
+      }
+    },
+    "/pr4/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Получение информации о всех пользователях",
+        "operationId": "getAllUsersUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserRes"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Добавление нового пользователя",
+        "operationId": "addNewUserUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/pr4/users/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Получение информации о пользователе по id",
+        "operationId": "getUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "everything is ok",
+            "schema": {
+              "$ref": "#/definitions/UserRes"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User with this id doesn't exist"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Обновление информации о пользователе по id",
+        "operationId": "updateUserUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserReq"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User with this id updated",
+            "schema": {
+              "$ref": "#/definitions/UserRes"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User with this id doesn't exist"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Удаление пользователя по id",
+        "operationId": "deleteUserUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "x-example": 5
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User with this id deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "User with this id doesn't exist"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Employee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      },
+      "title": "Employee"
+    },
+    "GrantedAuthority": {
+      "type": "object",
+      "properties": {
+        "authority": {
+          "type": "string"
+        }
+      },
+      "title": "GrantedAuthority"
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "addressFrom": {
+          "type": "string"
+        },
+        "addressTo": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customerUsername": {
+          "type": "string"
+        },
+        "distance": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "targetDate": {
+          "type": "string"
+        },
+        "targetTime": {
+          "type": "string"
+        },
+        "truck": {
+          "$ref": "#/definitions/Truck"
+        },
+        "workers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Employee"
+          }
+        }
+      },
+      "title": "Order"
+    },
+    "Truck": {
+      "type": "object",
+      "properties": {
+        "carNumber": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      },
+      "title": "Truck"
+    },
+    "UserReq": {
+      "type": "object",
+      "properties": {
+        "activationCode": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "resetPasswordToken": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ]
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "title": "UserReq"
+    },
+    "UserRes": {
+      "type": "object",
+      "properties": {
+        "accountNonExpired": {
+          "type": "boolean"
+        },
+        "accountNonLocked": {
+          "type": "boolean"
+        },
+        "activationCode": {
+          "type": "string"
+        },
+        "authorities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GrantedAuthority"
+          }
+        },
+        "credentialsNonExpired": {
+          "type": "boolean"
+        },
+        "email": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "resetPasswordToken": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "USER"
+            ]
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "title": "UserRes"
+    }
+  }
+}

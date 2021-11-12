@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  app:
+    container_name: spring
+    image: springboot-postgresql
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresqldb
+
+  postgresqldb:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=postgres
+#    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  nginx:
+    image: nginx:1.11
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/main/resources/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./src/main/resources/templates/home.html:/data/static/home.html
+      - ./src/main/resources/templates/error.html:/data/static/error.html
+
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"
