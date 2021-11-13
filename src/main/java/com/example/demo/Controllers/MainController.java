@@ -7,7 +7,7 @@ import com.example.demo.Roles.Role;
 import com.example.demo.Services.OrderService;
 import com.example.demo.Services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Контроллер, отвечающий за весь
@@ -43,6 +42,9 @@ public class MainController {
 
     @Autowired
     private PDFFileRepository pdfFileRepository;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     /**
      * Возврат домашней страницы
@@ -85,24 +87,32 @@ public class MainController {
     @PostMapping("/sendPDF")
     public String sendPDF(@RequestParam MultipartFile[] pdf) {
         for (MultipartFile file : pdf) {
-            try {
-                PDFFile pdfFile = new PDFFile(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+            if(!file.getOriginalFilename().equals("")) {
+                PDFFile pdfFile = new PDFFile();
+                pdfFile.setName(UUID.randomUUID() + file.getOriginalFilename());
+                pdfFile.setType(file.getContentType());
+
+                String filePath = uploadPath + "/" + UUID.randomUUID() + file.getOriginalFilename();
+                try {
+                    file.transferTo(new File(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 pdfFileRepository.save(pdfFile);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-
         return "redirect:/main";
     }
 
     @GetMapping("/downloadFile/{id}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long id) {
+    public ResponseEntity<File> downloadFile(@PathVariable Long id) {
         PDFFile pdfFile = pdfFileRepository.findPDFFileById(id);
+        String pastUrl = uploadPath + "/" + pdfFile.getName();
+        File fileFromPC = new File(pastUrl);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(pdfFile.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\"" + pdfFile.getName() + "\"")
-                .body(new ByteArrayResource(pdfFile.getData()));
+                .body(fileFromPC);
     }
 
     @GetMapping("/setContentParams")
